@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'datatables/dataTables.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block content %}
+  {% include 'classroom/students/_header.html' with active='new' %}
+  {% comment %} <p class="text-muted">
+    Subjects:{% for subject in user.student.interests.all %} {{ subject.get_html_badge }}{% endfor %}
+    <a href="{% url 'students:student_interests' %}"><small>(update interests)</small></a>
+  </p> {% endcomment %}
+
+  <table class="table table-bordered mb-0" id="tb_eventlist" >
+    <thead>
+      <tr>
+        <th>Event</th>
+        <th class="d-none d-sm-table-cell">Organizer</th>
+        {% comment %} <th class="d-none d-sm-table-cell">Questions</th> {% endcomment %}
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for event in events %}
+        <tr{% if event.organizer.id in student_organizers %} style="background: #fdf7e3"{%endif%}>
+          <td class="align-middle">{{ event.name }}</td>
+          <td class="align-middle d-none d-sm-table-cell">{{ event.organizer.get_html_badge }}</td>
+          {% comment %} <td class="align-middle d-none d-sm-table-cell">{{ quiz.questions_count }}</td> {% endcomment %}
+          <td class="text-right" data-orderable="false">
+            <a href="{% url 'students:event-detail' event.pk %}" class="btn btn-outline-info">Details</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td class="bg-light text-center font-italic" colspan="4">No Events at Present.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#tb_eventlist').DataTable({"order": [[ 2, "desc" ]]});
+});
+</script>
+{% endblock %}

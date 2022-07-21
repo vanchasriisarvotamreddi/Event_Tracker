@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+  
+  <h1>Title: {{ event.name }}</h1>
+  <p><strong>Description:</strong> {{ event.description | safe }}</p>
+  <p><strong>Date of Event:</strong> {{ event.dateofEvent }}</p> 
+  <p><strong>Registration Fee:</strong> {{ event.registrationFee }}</p>
+  <h3>Details of Organizer</h3>
+  <p><strong>Name:</strong> {{ organizer.name }}</p>
+  <p><strong>Description:</strong> {{ organizer.description }}</p> 
+  <p><strong>Email:</strong> {{ organizer.email }}</p>
+  <p><strong>Contact:</strong> {{ organizer.contact }}</p>
+  <td class="text-right" data-orderable="false">
+     {% comment %} <a href="{% url 'students:enroll_event' event.pk%}" class="btn btn-success">Enroll</a> {% endcomment %}
+     <a role="button" role="button" class="btn btn-warning nav-link btn-block" id="enrollButton">Enroll</a>
+  </td>
+  <div id = "enrollModal" class="modal fade" role = "dialog">
+        <div class="modal-dialog modal-lg" role="content">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Enrollement Confirmation</h4>
+                    <button type="button" class="close" data-dismiss ="modal">
+                        &times;
+                    </button> 
+                </div>
+                <div class="modal-body">
+                    <div class="col-12 col-md-9">
+                      <p>Are you sure you want to register for the Event?<i class="fa fa-handshake-o" aria-hidden="true"></i></p>
+                    <div>
+                    <div class="form-row">
+                        <button type="button" class="btn btn-secondary btn-lg ml-auto" data-dismiss="modal">Cancel</button>
+                        <a href="{% url 'students:enroll_event' event.pk%}" class="btn btn-primary btn-lg ml-1">OK</a>        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+ 
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function(){
+        $('#enrollButton').click(function() {
+            $('#enrollModal').modal('toggle');
+        });
+    });
+  </script>
+{% endblock %}
+

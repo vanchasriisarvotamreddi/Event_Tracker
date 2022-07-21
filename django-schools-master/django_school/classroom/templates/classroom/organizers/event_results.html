@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags humanize %}
+
+{% block content %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'organizers:event_change_list' %}">My Events</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'organizers:event_change' event.pk %}">{{ event.name }}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Participants</li>
+    </ol>
+  </nav>
+  <div class="container">
+  <div class="row">
+    <div class="col-6">
+      <h2 class="mb-3">{{ event.name }} Participants</h2>
+    </div>
+    <div class="col-3">
+      <a href="{% url 'organizers:event_attendance' event.pk %}" class="btn btn-success">Mark Attendance</a>
+    </div>
+    <div class="col-3">
+      <a href="{% url 'organizers:event_attendees' event.pk %}" class="btn btn-primary">Event Attendees</a>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <strong>Enrolled Students</strong>
+      <span class="badge badge-pill badge-primary float-right">Total Participants: {{ total_enrolled_students|default_if_none:0 }}</span>
+    </div>
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Student</th>
+          <th>Date</th>
+          {% comment %} <th>Percentage</th> {% endcomment %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for enrolled_student in enrolled_students %}
+          <tr>
+            <td>{{ enrolled_student.student.user.username }}</td>
+            <td>{{ enrolled_student.student.user.first_name }}&nbsp{{enrolled_student.student.user.last_name}}</td>
+            <td>{{ enrolled_student.date|naturaltime }}</td>
+            {% comment %} <td>{{ taken_quiz.percentage }}</td> {% endcomment %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="card-footer text-muted">
+      Total Participants: <strong>{{ total_enrolled_students }}</strong>
+    </div>
+  </div>
+{% endblock %}

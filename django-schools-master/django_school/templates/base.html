@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>{% block title %}VNR COLORS{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/favicon.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    {% comment %}
+    <script
+      type="text/javascript"
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"
+    ></script>
+    {% endcomment %} {% comment %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-countdown/2.1.0/css/jquery.countdown.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery-countdown/2.1.0/js/jquery.countdown.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery-countdown/2.1.0/js/jquery.plugin.min.js"
+    ></script>
+    {% endcomment %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'vendor/fontello-2f186091/css/fontello.css' %}"
+    />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}" />
+
+    {% if user.is_authenticated and user.is_organizer %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/teachers.css' %}"
+    />
+    {% else %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/students.css' %}"
+    />
+    {% endif %} {% block css %} {% endblock %}
+  </head>
+  <body>
+    <div class="container my-4" background="">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-sm-12">
+          <div class="row">
+            <div class="col-6">
+              <h1 class="logo">
+                <a href="{% url 'home' %}"> Jobs Tracker </a>
+              </h1>
+            </div>
+            <div class="col-6 text-right">
+              {% if user.is_authenticated %}
+              <p class="pt-3">
+                <strong
+                  >{{ user.username }}{% if user.is_student %} {%endif%}
+                </strong>
+                | <a href="{% url 'logout' %}">Log out</a>.
+              </p>
+              {% else %}
+              <a href="{% url 'login' %}" class="btn btn-light" role="button"
+                >Log in</a
+              >
+              <a href="{% url 'signup' %}" class="btn btn-primary" role="button"
+                >Sign up</a
+              >
+              {% endif %}
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-body">
+              {% for message in messages %}
+              <div
+                class="alert {{ message.tags }} alert-dismissible fade show"
+                role="alert"
+              >
+                {{ message }}
+                <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button> -->
+              </div>
+              {% endfor %} {% block content %} {% endblock %}
+            </div>
+          </div>
+          <footer>
+            {% comment %}
+            <a href="https://simpleisbetterthancomplex.com"
+              >© SimpleIsBetterThanComplex.com</a
+            >
+            /
+            <a
+              href="https://simpleisbetterthancomplex.com/tutorial/2018/01/18/how-to-implement-multiple-user-types-with-django.html"
+              >Read more about this example</a
+            >
+            /
+            <a href="https://github.com/suhailvs/django-schools/"
+              >GitHub repository</a
+            >
+            {% endcomment %}
+          </footer>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+    {% block js %} {% endblock %}
+  </body>
+</html>

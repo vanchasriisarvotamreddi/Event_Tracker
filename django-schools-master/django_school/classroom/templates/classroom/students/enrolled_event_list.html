@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% include 'classroom/students/_header.html' with active='enrolled' %}
+  <div class="card">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Event</th>
+          {% comment %} <th>Organizer</th> {% endcomment %}
+          <th>Date of Event</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for enrolled_event in enrolled_events %}
+          <tr>
+            <td><a href = "{% url 'students:enrolled_event_detail' enrolled_event.event.pk %}">{{ enrolled_event.event.name }}</a></td>
+            {% comment %} <td>{{ enrolled_event.event.organizer.get_html_badge }}</td> {% endcomment %}
+            <td>{{ enrolled_event.event.dateofEvent }}</td>
+            <td><a href="{% url 'students:certi' enrolled_event.event.pk %}" {% if enrolled_event.certificate %}class="btn btn-success"{% else %} class="btn btn-success disabled" {% endif %}role="button" aria-disabled="true">Download Certificate</a></td>
+            {% if not enrolled_event.feedback %}
+            <td><a href = {% url 'students:feedback_form' enrolled_event.event.pk%} class="btn btn-primary">FeedBack</a></td>
+            {% endif %}
+         </tr>
+        {% empty %}
+          <tr>
+            <td class="bg-light text-center font-italic" colspan="3">You haven't enrolled for any event yet.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+{% endblock %}

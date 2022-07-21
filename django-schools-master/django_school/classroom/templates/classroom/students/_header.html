@@ -1,0 +1,14 @@
+<h2>Events</h2>
+
+
+<ul class="nav nav-tabs mb-3">
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'new' %} active{% endif %}" href="{% url 'students:event_list' %}">Events</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link{% if active == 'enrolled' %} active{% endif %}" href="{% url 'students:enrolled_event_list' %}">Enrolled Events</a>
+  </li>
+  {% comment %} <li class="nav-item">
+    <a class="nav-link{% if active == 'students' %} active{% endif %}" href="{% url 'students:student_list' %}">Students</a>
+  </li> {% endcomment %}
+</ul>

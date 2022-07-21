@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags humanize %}
+
+{% block content %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'organizers:event_change_list' %}">My Events</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'organizers:event_change' event.pk %}">{{ event.name }}</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'organizers:event_results' event.pk %}">Participants</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Attendees Forum</li>
+    </ol>
+  </nav>
+  <div class="container">
+  <div class="row">
+    <div class="col-6">
+      <h2 class="mb-3">{{ event.name }} Participants</h2>
+    </div>
+    {% comment %} <div class="col-3">
+      <a href="{% url 'organizers:event_attendance' event.pk %}" class="btn btn-success">Mark Attendance</a>
+    </div> {% endcomment %}
+    
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <strong>Attended Students</strong>
+      <span class="badge badge-pill badge-dark float-right">Total Attendees: {{ attendees_count|default_if_none:0 }}</span>
+      <span class = "float-center">
+        <form method = "POST" action = "{% url 'organizers:generate' event.pk%}">
+              {% csrf_token %}
+              <button type = "submit" value = "Submit" class = "btn btn-info"> Issue Certificate</button>
+        </form>
+      </span>
+    </div>
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Student</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for present in presentees %}
+          <tr>
+            <td>{{ present.student.user.username }}</td>
+            <td>{{ present.student.user.first_name }}&nbsp{{present.student.user.last_name}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="card-footer text-muted">
+      <p class="text-success">***Eligible to recieve certificate</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <strong>Absentees</strong>
+      <span class="badge badge-pill badge-dark float-right">Total Absentees: {{ absentees_count|default_if_none:0 }}</span>
+      <span class = "float-center">
+        <form method = "POST" action = "{% url 'organizers:absent_mail' event.pk%}">
+              {% csrf_token %}
+              <button type = "submit" value = "Submit" class = "btn btn-info"> Mail-Absentees</button>
+        </form>
+      </span>
+    </div>
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Student</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for absent in absentees %}
+          <tr>
+            <td>{{ absent.student.user.username }}</td>
+            <td>{{ absent.student.user.first_name }}&nbsp{{absent.student.user.last_name}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="card-footer text-muted">
+      <p class="text-danger">***Not-Eligible to recieve certificate</p>
+    </div>
+  </div>
+{% endblock %}

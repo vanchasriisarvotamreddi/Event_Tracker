@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row">
+ <div class="col-md-3">
+    <div class="content-section">
+      <div class="media" style="text-align:center">
+        <figure>
+        <img class="rounded-circle account-img" style="width: 150px;height: 150px;" src="{% static 'img/default_image.jpg' %}">
+        <div class="media-body text-center">
+          <figcaption><h2 class="account-heading">{{ org.username }}</h2></figcaption>
+          <figcaption><h4>@{{org.name}}</h4></figcaption>
+        </figure>
+        </div>
+        <br>
+        <legend class="border-bottom mb-4 text-center">Profile Info</legend>
+        <h5>Contact: {{org.phone_number}}</h5>
+        <h5>Designation: {{user1.faculty.designation}}</h5>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock content %}
