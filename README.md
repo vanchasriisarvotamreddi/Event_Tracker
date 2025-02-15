@@ -1,4 +1,4 @@
-# Event Tracker
+# Event Tracker website
 
 ## Overview
 
